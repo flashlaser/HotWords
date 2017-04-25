@@ -63,7 +63,7 @@ def dealAuthor(targetPath, dicPath, inPath, notInPath):
             line=dic.readline()
             if line:
                 words=line.split('\t')
-                dicList.append(words[0])
+                dicList.append(words[4])
             else:
                 break
 
@@ -75,7 +75,7 @@ def dealAuthor(targetPath, dicPath, inPath, notInPath):
         while 1:
             line=target.readline()
             if line:
-                words=line.split('\t')
+                words=line.split('\n')
                 if words[0] in dicList:
                     authorIn.write(words[0]+'\n')
                 else:
@@ -93,10 +93,10 @@ def dealAuthor(targetPath, dicPath, inPath, notInPath):
 
 if __name__=='__main__':
 
-    targetPath='../../../data/author250/20170421.blog'
-    dicPath='../../../data/author250/all_21.txt'
-    inPath='../../../data/author250/in_21.txt'
-    notInPath='../../../data/author250/not_in_21.txt'
+    dicPath = '../../../data/author250/Spammer.info_0421'
+    targetPath='../../../data/author250/filter_mid.txt'
+    inPath='../../../data/author250/in_mid.txt'
+    notInPath='../../../data/author250/not_in_mid.txt'
     #path='../../../data/author250/dic.txt'
 
     #dealAuthor(targetPath, dicPath,inPath, notInPath, '20170328')
