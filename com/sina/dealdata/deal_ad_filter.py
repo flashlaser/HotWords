@@ -8,7 +8,6 @@ def ad_filter(in_path, out_path, ad_path):
         ad_word=line.strip().strip('\n')
         ad_list.append(ad_word)
 
-
     # 去除还有广告词的微博
     out_file=open(out_path, 'w')
     flag=False
