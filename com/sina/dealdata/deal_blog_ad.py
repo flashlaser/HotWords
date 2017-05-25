@@ -1,5 +1,11 @@
 # coding=utf-8
 
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
 ## 若文本行中包含广告词则删除该行数据
 def ad_filter(in_path, out_path, ad_path):
     # 加载广告词
