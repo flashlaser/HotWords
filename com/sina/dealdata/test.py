@@ -13,3 +13,4 @@ if __name__=='__main__':
     print('hello')
     filePath='../../../data/author250/all_28.txt'
     splitSpammer(filePath)
+    print('test')
