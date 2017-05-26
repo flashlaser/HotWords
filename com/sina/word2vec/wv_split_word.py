@@ -45,9 +45,6 @@ def splitWord(stopwordsPath, rFilePath, wFilePath):
                 stopwords.append(words[0])
             else:
                 break
-        #stopwords=sw.read().split('\n')
-    # for w in stopwords:
-    #     print(w)
 
     # 加载分词后要写入的文件
     wf=open(wFilePath, 'w')
