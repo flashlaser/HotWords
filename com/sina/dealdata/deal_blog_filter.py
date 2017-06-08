@@ -9,14 +9,14 @@ sys.setdefaultencoding('utf-8')
 
 ## 判断一条微博是否为广告
 def is_spam(mid):
-    spammer_flag=deal_blog_field.get_spammer_api(mid)
+    spammer_flag = deal_blog_field.get_spammer_api(mid)
     if spammer_flag is None:
         return False
     try:
-        spammer_flag_value=int(spammer_flag)
+        spammer_flag_value = int(spammer_flag)
     except:
-        spammer_flag_value=100
-    if spammer_flag_value==100:
+        spammer_flag_value = 100
+    if spammer_flag_value == 100:
         return False
     else:
         return True
@@ -24,17 +24,17 @@ def is_spam(mid):
 
 ## 过滤微博依据广告词
 def blog_filter_spam(blog_path, blog_spam_path, blog_no_spam_path):
-    blog_spam_file=open(blog_spam_path, 'w')
-    blog_no_spam_file=open(blog_no_spam_path, 'w')
+    blog_spam_file = open(blog_spam_path, 'w')
+    blog_no_spam_file = open(blog_no_spam_path, 'w')
     for line in open(blog_path, 'r'):
-        line=line.strip().strip('\n')
-        items=line.split('\t')
-        mid=items[0]
-        spam_flag=is_spam(mid)
+        line = line.strip().strip('\n')
+        items = line.split('\t')
+        mid = items[0]
+        spam_flag = is_spam(mid)
         if spam_flag:
-            blog_spam_file.write(line+'\n')
+            blog_spam_file.write(line + '\n')
         else:
-            blog_no_spam_file.write(line+'\n')
+            blog_no_spam_file.write(line + '\n')
     blog_spam_file.close()
     blog_no_spam_file.close()
 
@@ -99,7 +99,7 @@ def blog_filter_tag(app_token, tag_path, blog_path, out_path):
         tag = deal_blog_field.get_tag(app_token, mid)
         if not tag:
             continue
-        tag_id, tag_name=tag
+        tag_id, tag_name = tag
         if tag_id in tag_black_list:
             continue
         else:
@@ -107,37 +107,48 @@ def blog_filter_tag(app_token, tag_path, blog_path, out_path):
 
     out.close()
 
+
 ## 过滤微博依据热词
-def blog_filter_hot_words(hot_words_path, in_path, out_path, hot_word_threshold=2):
+def blog_filter_hot_words(hot_words_path, in_path, out_path_blog_contain_hot_words,
+                          out_path_blog_contain_hot_words_no, hot_word_threshold=2):
     hot_word_list = []
     for word in open(hot_words_path, 'r').readlines():
         word = word.strip().strip('\n')
         hot_word_list.append(word)
 
-    out_file = open(out_path, 'w')
+    out_file_blog_contain_hot_words = open(out_path_blog_contain_hot_words, 'w')
+    out_file_blog_contain_hot_words_no = open(out_path_blog_contain_hot_words_no, 'w')
     for line in open(in_path, 'r').readlines():
-        line = line.strip().strip('\n')
-        items = line.split('\t')
-        # 取出微博内容字段
-        blog_mid=items[0]
-        blog_score=items[8]
-        blog_content = items[12]
+        try:
+            line = line.strip().strip('\n')
+            items = line.split('\t')
+            # 取出微博内容字段
+            blog_mid = items[0]
+            blog_score = items[8]
+            blog_uid = items[9]
+            blog_level = items[10]
+            blog_created_at = items[11]
+            blog_content = items[12]
 
-        blog_hot_word_set = set()  # 存放每条微博中包含的热词
-        for hot_word in hot_word_list:
-            if blog_content.__contains__(hot_word):
-                blog_hot_word_set.add(hot_word)
+            blog_hot_word_set = set()  # 存放每条微博中包含的热词
+            for hot_word in hot_word_list:
+                if blog_content.__contains__(hot_word):
+                    blog_hot_word_set.add(hot_word)
+                else:
+                    continue
+
+            count = len(blog_hot_word_set)  # 统计每条微博中包含热词的总数
+            result = blog_mid + '\t' + blog_uid + '\t' + blog_level + '\t' + str(
+                blog_score) + '\t' + blog_created_at + '\t' + blog_content + '\t' + str(count)
+            if count >= hot_word_threshold:
+                out_file_blog_contain_hot_words.write(result + '\n')
             else:
-                continue
-
-        count = len(blog_hot_word_set)  # 统计每条微博中包含热词的总数
-        if count >= hot_word_threshold:
-            result = blog_mid + '\t' + str(blog_score) + '\t' +str(count)
-            out_file.write(result + '\n')
-        else:
+                out_file_blog_contain_hot_words_no.write(result + '\n')
+        except Exception, e:
             continue
 
-    out_file.close()
+    out_file_blog_contain_hot_words.close()
+    out_file_blog_contain_hot_words_no.close()
 
 
 if __name__ == '__main__':
@@ -154,10 +165,10 @@ if __name__ == '__main__':
     # blog_filter_tag(redis_app_token, tag_path, blog_filter_users_level_out_path, blog_filter_tag_out_path)
     # blog_filter_hot_words(hot_words_path, blog_filter_tag_out_path, blog_filter_hot_words_out_path, 0)
 
-    #print(is_spam('4110189290209508'))
+    # print(is_spam('4110189290209508'))
 
-    blog_path='/data4/shaojie5/littlebei/data/test/20170522.blog'
-    blog_spam_path='/data4/shaojie5/littlebei/data/test/20170522.blog_spam'
-    blog_no_spam_path='/data4/shaojie5/littlebei/data/test/20170522.blog_no_spam'
+    blog_path = '/data4/shaojie5/littlebei/data/test/20170522.blog'
+    blog_spam_path = '/data4/shaojie5/littlebei/data/test/20170522.blog_spam'
+    blog_no_spam_path = '/data4/shaojie5/littlebei/data/test/20170522.blog_no_spam'
 
     blog_filter_spam(blog_path, blog_spam_path, blog_no_spam_path)
