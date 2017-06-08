@@ -24,17 +24,17 @@ def filter_symbol(context):
 
     return context
 
-def keywords_extract_tf_idf(sentence):
-    key_words = jieba.analyse.extract_tags(sentence, topK=15)
-    words = ''.join(key_words)
+def extract_keywords_tf_idf(sentence, topK):
+    key_words = jieba.analyse.extract_tags(sentence, topK=topK)
+    words = ' '.join(key_words)
     return words
 
 
 if __name__=='__main__':
     sentence='#晓说2017#节目神预测！高晓松押中高考题，从预测奥斯卡到预测#高考作文#，江苏高考见证新一代预测帝诞生！说到古今中外未来出行，我只服@高晓松 ，到底矮大紧咋说的？不废话看视频[笑而不语]http://t.cn/Ra1nDIH '
     sentence=filter_symbol(sentence)
-    print keywords_extract_tf_idf(sentence)
+    print extract_keywords_tf_idf(sentence)
 
     sentence = '高晓松押中高考题，就是不知道这一年压了多少个考题。女子面试自称有颜值有气质，哎，狗生如戏，全靠演技，我可能遇到了一只假狗[摊手]#分享南京# http://t.cn/RMFrrlN ​'
     sentence = filter_symbol(sentence)
-    print keywords_extract_tf_idf(sentence)
+    print extract_keywords_tf_idf(sentence)
