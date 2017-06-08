@@ -2,6 +2,7 @@
 
 import deal_blog_field
 import sys
+import time
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -70,6 +71,12 @@ def blog_filter_user_level(app_token, users_level_path, blog_path, out_path):
         if not blog_fields:
             continue
         uid, content, created_at, content_length = blog_fields
+        # 依据时间过滤
+        created_stamp=time.mktime(time.strptime(created_at, "%a %b %d %H:%M:%S +0800 %Y"))
+        local_stamp=time.time()
+        if local_stamp-created_stamp>1.5*60*60:
+            continue
+
         # 过滤用户
         if not uid in users_level_dic:
             continue

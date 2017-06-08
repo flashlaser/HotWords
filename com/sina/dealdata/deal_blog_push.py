@@ -1,6 +1,5 @@
 # coding=utf-8
 
-from com.sina.dealdata import deal_blog_field
 import os
 import sys
 
