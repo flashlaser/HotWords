@@ -22,7 +22,17 @@ def filter_symbol(context):
     context = context.strip().strip('\n')
     context = re_http.sub('', context)
     context = re_punc.sub('', context)
+    return context
 
+
+## 提取文本中的汉子
+def get_zh(context):
+    context = context.decode('utf-8')
+    context = context.strip().strip('\n')
+    # 汉字正则表达式
+    re_zh = re.compile(u"([\u4e00-\u9fff]+)")
+    context_list = re_zh.findall(context)
+    context = ''.join(context_list)
     return context
 
 
@@ -78,9 +88,9 @@ def jieba_hot_word_tf_idf(blog_content_list):
     for blog_content in blog_content_list:
         blog_content=blog_content.strip().strip('\n')
         # 过滤特殊符号
-        sentence = filter_symbol(blog_content)
+        sentence = get_zh(blog_content)
         # 提取每条微博的关键词
-        key_words = jieba.analyse.extract_tags(sentence, topK=20, withWeight=False, allowPOS=('ns', 'n', 'vn', 'v'))
+        key_words = jieba.analyse.extract_tags(sentence, topK=20) #, withWeight=False, allowPOS=('ns', 'n', 'vn', 'v'))
         if key_words:
             seg_words_list.append(key_words)
         else:
@@ -146,13 +156,14 @@ def count_words(seg_words_list):
                 key_words[word]=1
     # 对生成的词频排序
     key_words_sort = sorted(key_words.items(), lambda x, y: cmp(x[1], y[1]), reverse=True)
-    key_words_list=[]
-    for item in key_words_sort:
-        word=item[0]
-        word_count=[1]
-        key_words_list.append(word)
+    # key_words_list=[]
+    # for item in key_words_sort:
+    #     word=item[0]
+    #     word_count=[1]
+    #     result = word + '\t' + str(word_count)
+    #     key_words_list.append(result)
 
-    return key_words_list
+    return key_words_sort
 
 
 ## 取前k个关键词
@@ -163,7 +174,7 @@ def keywords_top(key_words_list, top_k):
 ### 提取微博各个类别中的热词
 ## 分词
 def seg_word(sentence):
-    seg_list = jieba.cut(str, cut_all=False)
+    seg_list = jieba.cut(sentence, cut_all=False)
     seg_str = ' '.join(seg_list)
     return seg_str
 
@@ -198,8 +209,5 @@ if __name__ == '__main__':
     # count_words(out_path_text_rank, out_path_text_rank_count_words)
 
     sentence='线程是程序执行时的最小单位，它是进程的一个执行流，'
-    key_words=jieba.analyse.textrank(sentence, topK=10)
-    for word in key_words:
-        print word
-
-    print(type(key_words))
+    # print filter_symbol(sentence)
+    print get_zh(sentence)
