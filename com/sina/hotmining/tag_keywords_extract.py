@@ -100,7 +100,12 @@ def tag_keywords_extract_single(in_path, out_path):
         key_words=hot_word_score.count_words(seg_words_list)
         top_keywords=hot_word_score.keywords_top(key_words, top_k=200)
         if top_keywords:
-            words = ' '.join(top_keywords)
+            word_list=[]
+            for item in top_keywords:
+                word=item[0]
+                word_count=item[1]
+                word_list.append(word+'('+word_count+')')
+            words = ' '.join(word_list)
             tag_name=tag_category_dic[tag_id]
             result = tag_id + '\t' + tag_name + '\t' +words
             out_file.write(result + '\n')
@@ -125,6 +130,6 @@ if __name__=='__main__':
     tag_blog_path='/data4/shaojie5/littlebei/data/test/20170522.tag_blog'
     # merge_tag_blog(tag_filter_path, blog_path, tag_blog_path)
 
-    out_path='/data4/shaojie5/littlebei/data/test/20170522.tag_keywords_3'
+    out_path='/data4/shaojie5/littlebei/data/test/20170522.tag_keywords_4'
     # tag_keywords_extract_merge(tag_blog_path, out_path)
     tag_keywords_extract_single(tag_blog_path, out_path)
