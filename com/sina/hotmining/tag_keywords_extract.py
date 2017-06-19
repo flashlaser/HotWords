@@ -104,7 +104,7 @@ def tag_keywords_extract_single(in_path, out_path):
             for item in top_keywords:
                 word=item[0]
                 word_count=item[1]
-                word_list.append(word+'('+word_count+')')
+                word_list.append(word+'('+str(word_count)+')')
             words = ' '.join(word_list)
             tag_name=tag_category_dic[tag_id]
             result = tag_id + '\t' + tag_name + '\t' +words
