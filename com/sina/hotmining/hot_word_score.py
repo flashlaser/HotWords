@@ -208,6 +208,16 @@ if __name__ == '__main__':
     # jieba_hot_word_text_rank(blog_path, out_path_text_rank)
     # count_words(out_path_text_rank, out_path_text_rank_count_words)
 
-    sentence='线程是程序执行时的最小单位，它是进程的一个执行流，'
+    sentence='英国胖妹7年间谎称被15个男人性侵 最惨小哥被冤入狱七年'
     # print filter_symbol(sentence)
-    print get_zh(sentence)
+    sentence=get_zh(sentence)
+    key_words = jieba.analyse.extract_tags(sentence, topK=5, allowPOS=('ns', 'n', 'vn', 'v'))
+    words=' '.join(key_words)
+    print words
+
+    sentence = ''
+    # print filter_symbol(sentence)
+    sentence = get_zh(sentence)
+    key_words = jieba.analyse.extract_tags(sentence, topK=4)
+    words = ' '.join(key_words)
+    print words
