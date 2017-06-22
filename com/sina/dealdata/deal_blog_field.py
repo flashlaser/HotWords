@@ -70,7 +70,7 @@ def get_mid(in_path, out_path):
 
 ## 获取spammer接口字段
 def get_spammer_api(mid, tryout=3, timeout=5):
-    api = "http://i.datastrategy.weibo.com/1/strategy/distribution/feed/hot/show.json"
+    api = "http://i.datastrategy.weibo.com/1/strategy/distribution/feed/hot/show.json?"
     params = {"source": 134277248, "mid": mid}
     for i in xrange(tryout):
         try:
@@ -86,7 +86,6 @@ def get_spammer_api(mid, tryout=3, timeout=5):
             time.sleep(0.1)
             continue
     return None
-
 
 
 ## 获取单条微博中的uid、level、created_at、content、content_length等信息
