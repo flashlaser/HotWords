@@ -22,6 +22,17 @@ def filter_symbol(context):
     return context
 
 
+## 提取文本中的汉字
+def get_zh(context):
+    context = context.decode('utf-8')
+    context = context.strip().strip('\n')
+    # 汉字正则表达式
+    re_zh = re.compile(u"([\u4e00-\u9fff]+)")
+    context_list = re_zh.findall(context)
+    context = ' '.join(context_list)
+    return context
+
+
 ## 获取停用词表
 def get_stopwords():
     in_path='/home/littlebei/program/python/pycharm/HotWords/data/lda/stop_words_1893.txt'
@@ -53,6 +64,12 @@ def seg_zh(in_path, seg_symbol, out_path):
     out_file.close()
 
 if __name__ == '__main__':
-    in_path='/home/littlebei/program/python/pycharm/HotWords/data/lda/test'
-    out_path='/home/littlebei/program/python/pycharm/HotWords/data/lda/result'
-    seg_zh(in_path, ' ', out_path)
+    # in_path='/home/littlebei/program/python/pycharm/HotWords/data/lda/test'
+    # out_path='/home/littlebei/program/python/pycharm/HotWords/data/lda/result'
+    # seg_zh(in_path, ' ', out_path)
+
+    str = '【电动洁面仪去黑头洗脸刷洗脸仪器毛孔清洁器】 【原价】79【券后价】 49 【领30元券下单】http://t.cn/Ra1BDNe ----------------- #2017长春国际马拉松赛#更多内部优惠券神器：http://t.cn/Ra1BDSc'
+    sentence = get_zh(str)
+    seg_list = jieba.cut(sentence, cut_all=False)
+    words = ' '.join(seg_list)
+    print(words)
