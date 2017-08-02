@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import redis_token
+from com.sina.giveme import redis_token
 import urllib, urllib2
 import json
 import time
