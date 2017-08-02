@@ -11,9 +11,11 @@ sys.setdefaultencoding('utf-8')
 ## 去除标点符号以及特殊字符
 def filter_symbol(context):
     # http正则表达式规则
-    re_http = re.compile(r'[a-zA-z]+://[^\s]*')
+    # re_http = re.compile(r'[a-zA-z]+://[^\s]*'.decode('utf-8'))
+    # re_http = re.compile(r'(?i)\b((https?|ftp|file)://|(www|ftp)\.)[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$]'.decode('utf-8'))
+    re_http = re.compile(r'(?i)((http|https)[:：]?//|(www)\.)[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$]'.decode('utf-8'))
     # 中英文标点符号正则表达式
-    re_punc = re.compile('[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*🙄“”《》【】：（）]+'.decode('utf8'))
+    re_punc = re.compile(r'[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*🙄“”《》【】：（）]+'.decode('utf8'))
 
     context = context.decode('utf-8')
     context = context.strip().strip('\n')
@@ -68,8 +70,9 @@ if __name__ == '__main__':
     # out_path='/home/littlebei/program/python/pycharm/HotWords/data/lda/result'
     # seg_zh(in_path, ' ', out_path)
 
-    str = '【电动洁面仪去黑头洗脸刷洗脸仪器毛孔清洁器】 【原价】79【券后价】 49 【领30元券下单】http://t.cn/Ra1BDNe ----------------- #2017长春国际马拉松赛#更多内部优惠券神器：http://t.cn/Ra1BDSc'
-    sentence = get_zh(str)
-    seg_list = jieba.cut(sentence, cut_all=False)
-    words = ' '.join(seg_list)
-    print(words)
+    str = '一辆沧州牌照（冀J-6W5Whttp://t.cn/RKPKTnc女子幸运地倒挂在电缆线上，双腿被电缆线的空隙缠绕着。最终，消防队员将其救下。  http://t.cn/Rokv2OI'
+    # sentence = get_zh(str)
+    # seg_list = jieba.cut(sentence, cut_all=False)
+    # words = ' '.join(seg_list)
+    # print(words)
+    print filter_symbol(str)
