@@ -63,9 +63,12 @@ def get_mid_file(base_dir):
 
 ## 获取blog中的mid
 def get_mid(in_path, out_path):
-    blogs=pd.read_table(in_path, header=None)
-    blog_mids = blogs.iloc[:, 0]
-    blog_mids.to_csv(out_path, index=False, header=False)
+    try:
+        blogs = pd.read_table(in_path, header=None)
+        blog_mids = blogs.iloc[:, 0]
+        blog_mids.to_csv(out_path, index=False, header=False)
+    except Exception, e:
+        print(get_mid, e)
 
 
 ## 获取spammer接口字段
@@ -254,22 +257,27 @@ def get_like_comments_repost_batch(app_token, mid_list):
 ## 返回值:互动数,曝光数,互动曝光比
 def get_act_expose_rate(mid, db_read_0, db_read_1, db_read_2, db_read_3, db_read_4, db_read_5, db_read_6, db_read_7):
     db = None
-    if int(mid) % 8 == 0:
-        db = db_read_0
-    elif int(mid) % 8 == 1:
-        db = db_read_1
-    elif int(mid) % 8 == 2:
-        db = db_read_2
-    elif int(mid) % 8 == 3:
-        db = db_read_3
-    elif int(mid) % 8 == 4:
-        db = db_read_4
-    elif int(mid) % 8 == 5:
-        db = db_read_5
-    elif int(mid) % 8 == 6:
-        db = db_read_6
-    elif int(mid) % 8 == 7:
-        db = db_read_7
+    try:
+        if int(mid) % 8 == 0:
+            db = db_read_0
+        elif int(mid) % 8 == 1:
+            db = db_read_1
+        elif int(mid) % 8 == 2:
+            db = db_read_2
+        elif int(mid) % 8 == 3:
+            db = db_read_3
+        elif int(mid) % 8 == 4:
+            db = db_read_4
+        elif int(mid) % 8 == 5:
+            db = db_read_5
+        elif int(mid) % 8 == 6:
+            db = db_read_6
+        elif int(mid) % 8 == 7:
+            db = db_read_7
+    except Exception, e:
+        print('get_act_expose_rate', e)
+        return 0, 0, 0.0
+
     action = 0
     expose = 0
     rate = 0.0
@@ -288,7 +296,7 @@ def get_act_expose_rate(mid, db_read_0, db_read_1, db_read_2, db_read_3, db_read
             else:
                 action = db.pfcount(mid_action)
         except Exception, e:
-            print(get_act_expose_rate, e)
+            print('get_act_expose_rate', e)
             continue
     # rate为互动曝光比
     rate = (float(int(action) + 1)) / float((int(expose) + 1))
