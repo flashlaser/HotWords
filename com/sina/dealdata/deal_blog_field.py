@@ -224,20 +224,24 @@ def get_like_comments_repost_batch(app_token, mid_list):
                 continue
             dic = req.json()
             for j in range(0, len(mid_list)):
-                blog_information = []
-                mid = mid_list[j]
-                reads = dic[j]['reads']  # 阅读量
-                reposts = dic[j]['reposts']  # 转发量
-                attitudes = dic[j]['attitudes']  # 点赞数
-                comments = dic[j]['comments']  # 评论
+                try:
+                    blog_information = []
+                    mid = mid_list[j]
+                    reads = dic[j]['reads']  # 阅读量
+                    reposts = dic[j]['reposts']  # 转发量
+                    attitudes = dic[j]['attitudes']  # 点赞数
+                    comments = dic[j]['comments']  # 评论
 
-                blog_information.append(mid)
-                blog_information.append(reads)
-                blog_information.append(reposts)
-                blog_information.append(attitudes)
-                blog_information.append(comments)
+                    blog_information.append(mid)
+                    blog_information.append(reads)
+                    blog_information.append(reposts)
+                    blog_information.append(attitudes)
+                    blog_information.append(comments)
 
-                blog_information_list.append(blog_information)
+                    blog_information_list.append(blog_information)
+                except Exception, e:
+                    print('get_like_comments_repost_batch'+e)
+                    continue
             return blog_information_list
         except requests.RequestException:
             time.sleep(0.1)
@@ -284,7 +288,7 @@ def get_act_expose_rate(mid, db_read_0, db_read_1, db_read_2, db_read_3, db_read
             else:
                 action = db.pfcount(mid_action)
         except Exception, e:
-            print e
+            print(get_act_expose_rate, e)
             continue
     # rate为互动曝光比
     rate = (float(int(action) + 1)) / float((int(expose) + 1))
