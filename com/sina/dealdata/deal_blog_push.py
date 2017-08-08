@@ -22,7 +22,10 @@ def get_blog_filed_filter_file(base_dir):
 
 ## 将目标文件推送到指定的服务器下
 def push_blog_mid_file(blog_mid_path):
-    os.system('rsync ' + blog_mid_path + ' 10.73.20.41::shaojie5')
+    try:
+        os.system('rsync ' + blog_mid_path + ' 10.73.20.41::shaojie5')
+    except Exception, e:
+        print('push_blog_mid_file', e)
 
 
 if __name__ == '__main__':
