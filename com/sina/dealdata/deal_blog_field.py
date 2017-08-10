@@ -243,7 +243,7 @@ def get_like_comments_repost_batch(app_token, mid_list):
 
                     blog_information_list.append(blog_information)
                 except Exception, e:
-                    print('get_like_comments_repost_batch'+e)
+                    print('get_like_comments_repost_batch', e)
                     continue
             return blog_information_list
         except requests.RequestException:
@@ -351,6 +351,8 @@ def get_blog_field_streaming_batch(app_token, mid_path, out_path, n=10):
     mid_set = set()
     for line in open(mid_path, 'r').readlines():
         mid = line.strip().strip('\n')
+        if mid is None or mid is '':
+            continue
         mid_set.add(mid)
     mid_list = list(mid_set)
     mid_size = len(mid_list)
@@ -374,8 +376,7 @@ def get_blog_field_streaming_batch(app_token, mid_path, out_path, n=10):
                 comments = item[4]
                 action, expose, rate = get_act_expose_rate(mid, db_read_0, db_read_1, db_read_2, db_read_3, db_read_4, db_read_5, db_read_6, db_read_7)
                 result = str(mid) + '\t' + str(reads) + "\t" + str(reposts) + "\t" \
-                         + str(attitudes) + "\t" + str(comments) + "\t" + str(action) + "\t" + str(expose) + "\t" + str(
-                    rate)
+                         + str(attitudes) + "\t" + str(comments) + "\t" + str(action) + "\t" + str(expose) + "\t" + str(rate)
                 # print(result)
                 out.write(result + '\n')
         else:
