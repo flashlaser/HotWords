@@ -14,37 +14,41 @@ def datas_load(file_path):
     datas_use = []  # 用到的数据
     datas_nouse = []  # 没有用到的数据
     for line in open(file_path, 'r').readlines():
-        words = line.strip().strip('\n').split('\t')
-        # print(len(words))
-        mid = words[0]
-        # uid = words[1]
-        # url = words[2]
-        # level = words[3]
-        reads = float(words[1])
-        reposts = float(words[2])
-        attitudes = float(words[3])
-        comments = float(words[4])
-        action = float(words[5])
-        expose = float(words[6])
-        rate = float(words[7])
+        try:
+            words = line.strip().strip('\n').split('\t')
+            # print(len(words))
+            mid = words[0]
+            # uid = words[1]
+            # url = words[2]
+            # level = words[3]
+            reads = float(words[1])
+            reposts = float(words[2])
+            attitudes = float(words[3])
+            comments = float(words[4])
+            action = float(words[5])
+            expose = float(words[6])
+            rate = float(words[7])
 
-        data_use = []
-        data_nouse = []
-        data_nouse.append(mid)
-        # data_nouse.append(uid)
-        # data_nouse.append(url)
-        # data_nouse.append(level)
+            data_use = []
+            data_nouse = []
+            data_nouse.append(mid)
+            # data_nouse.append(uid)
+            # data_nouse.append(url)
+            # data_nouse.append(level)
 
-        data_use.append(reads)
-        data_use.append(reposts)
-        data_use.append(attitudes)
-        data_use.append(comments)
-        data_use.append(action)
-        data_use.append(expose)
-        data_use.append(rate)
-        # print(data)
-        datas_use.append(data_use)
-        datas_nouse.append(data_nouse)
+            data_use.append(reads)
+            data_use.append(reposts)
+            data_use.append(attitudes)
+            data_use.append(comments)
+            data_use.append(action)
+            data_use.append(expose)
+            data_use.append(rate)
+            # print(data)
+            datas_use.append(data_use)
+            datas_nouse.append(data_nouse)
+        except Exception, e:
+            print('datas_load', e)
+            continue
     return datas_use, datas_nouse
 
 
@@ -69,7 +73,7 @@ def cal_hot_score(datas_min_max, reads_weight, reposts_weight, attitudes_weight,
         expose = data[5]
         rate = data[6]
         score = reads_weight * reads + reposts_weight * reposts + attitudes_weight * attitudes + comments_weight * comments + action_weight * action + expose_weight * expose + rate * rate_weight
-
+        score=round(score, 12)
         data.append(score)
         datas_score.append(data)
     return datas_score
